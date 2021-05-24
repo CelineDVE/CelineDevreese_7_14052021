@@ -2,18 +2,20 @@ module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define("User", {
     email: {
       type: Sequelize.STRING,
+      required: true,
+      unique: true,
     },
     username: {
       type: Sequelize.STRING,
+      required: true,
+      unique: true,
     },
     password: {
       type: Sequelize.STRING,
+      required: true,
     },
-    createdAt: {
-      type: Sequelize.DATE,
-    },
-    updatedAt: {
-      type: Sequelize.DATE,
+    imageUrl: {
+      type: Sequelize.STRING,
     }
   });
   return User;

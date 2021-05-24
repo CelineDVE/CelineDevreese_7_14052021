@@ -9,7 +9,8 @@ const cors          = require("cors");
 const app           = express();
 const corsOptions   = {origin: "http://localhost:3306"};
 
-const userRoutes     = require('./routes/user');
+const userRoutes     = require("./routes/user");
+const authRoutes     = require("./routes/userConnect");
 
 app.use(cors(corsOptions));
 app.use(helmet()); //Sécuriser les headers
@@ -33,10 +34,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/images", express.static(path.join(__dirname, "images")));
-app.use(express.static("images"));
 
 db.sequelize.sync();
 
 app.use('/reseau_social/member', userRoutes);
+app.use("/reseau_social", authRoutes);
 
 module.exports = app;
