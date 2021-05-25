@@ -6,11 +6,11 @@ exports.updateUser = (req, res, next) => {
   User
     .update(req.body, { where: { id: req.params.id } })
     .then((user) => {
-      if (user.imageUrl !== null) {
+      if (user.image_url !== null) {
         const userObject = req.file
           ? {
               ...JSON.parse(req.body.user),
-              imageUrl: `${req.protocol}://${req.get("host")}/images/${
+              image_url: `${req.protocol}://${req.get("host")}/images/${
                 req.file.filename
               }`,
             }
@@ -31,8 +31,8 @@ exports.deleteUser = (req, res, next) => {
     User
         .findOne({ where: { id: req.params.id } })
         .then((user) => {
-          if(user.imageUrl !== null) {
-            const filename = user.imageUrl.split("/images/")[1];
+          if(user.image_url !== null) {
+            const filename = user.image_url.split("/images/")[1];
             fs.unlink(`images/${filename}`, () => {
                 User.destroy({ where: { id: req.params.id } })
                   .then(() =>

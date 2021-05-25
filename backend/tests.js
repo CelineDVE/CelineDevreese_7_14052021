@@ -82,3 +82,18 @@ exports.findAllUsers = (req, res, next) => {
     .then((users) => res.status(200).json(users))
     .catch((error) => res.status(400).json({ error }));
 };
+
+exports.createPost = (req, res, next) => {
+  const postObject = req.body;
+  delete postObject.id;
+  const post = new Post({
+    ...postObject,
+    image_url: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
+  });
+  post
+    .save()
+    .then(() => res.status(201).json({ message: "Post créé !" }))
+    .catch((error) => res.status(400).json({ error }));
+};

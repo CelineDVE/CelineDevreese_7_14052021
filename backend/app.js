@@ -1,16 +1,17 @@
 require("dotenv").config({ path: "./config/.env" });
-const express       = require("express");
-const bodyParser    = require("body-parser");
-const path          = require("path");
-const helmet        = require("helmet");
-const xss           = require("xss-clean");
-const db            = require("./models/index");
-const cors          = require("cors");
-const app           = express();
-const corsOptions   = {origin: "http://localhost:3306"};
+const express               = require("express");
+const bodyParser            = require("body-parser");
+const path                  = require("path");
+const helmet                = require("helmet");
+const xss                   = require("xss-clean");
+const db                    = require("./models/index");
+const cors                  = require("cors");
+const app                   = express();
+const corsOptions           = {origin: "http://localhost:3306"};
 
-const userRoutes     = require("./routes/user");
-const authRoutes     = require("./routes/userConnect");
+const userRoutes            = require("./routes/user");
+const userConnectRoutes     = require("./routes/userConnect");
+const postRoutes            = require("./routes/post"); 
 
 app.use(cors(corsOptions));
 app.use(helmet()); //Sécuriser les headers
@@ -37,7 +38,8 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 db.sequelize.sync();
 
-app.use('/reseau_social/member', userRoutes);
-app.use("/reseau_social", authRoutes);
+app.use("/reseau_social/member", userRoutes);
+app.use("/reseau_social", userConnectRoutes);
+app.use("/reseau_social/post", postRoutes);
 
 module.exports = app;
