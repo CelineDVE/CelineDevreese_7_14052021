@@ -8,6 +8,15 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   port: process.env.DB_PORT,
+  dialectOptions: {
+     typeCast: function (field, next) {
+        if (field.type === 'DATETIME') {
+            return field.string()
+        }
+        return next()
+     },
+  },
+  timezone: '+02:00',
 
   pool: {
     max: dbConfig.pool.max,
@@ -22,5 +31,6 @@ db.sequelize = sequelize;
 
 db.users = require("./user")(sequelize, Sequelize);
 db.posts = require("./post")(sequelize, Sequelize);
+db.comments = require("./comment")(sequelize, Sequelize);
 
 module.exports = db;

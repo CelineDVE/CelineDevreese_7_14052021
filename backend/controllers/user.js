@@ -41,7 +41,8 @@ exports.deleteUser = (req, res, next) => {
                   .catch((error) => res.status(400).json({ error }));
             });
           } else {
-            User.destroy({ where: { id: req.params.id } })
+            User
+              .destroy({ where: { id: req.params.id } })
               .then(() =>
                 res
                   .status(200)
@@ -67,4 +68,12 @@ exports.findAllUsers = (req, res, next) => {
     .findAll()
     .then((users) => res.status(200).json(users))
     .catch((error) => res.status(400).json({ error }));
+};
+
+exports.follow = (req, res, next) => {
+
+};
+
+exports.unfollow = (req, res, next) => {
+
 };

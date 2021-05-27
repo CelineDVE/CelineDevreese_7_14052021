@@ -11,7 +11,8 @@ const corsOptions           = {origin: "http://localhost:3306"};
 
 const userRoutes            = require("./routes/user");
 const userConnectRoutes     = require("./routes/userConnect");
-const postRoutes            = require("./routes/post"); 
+const postRoutes            = require("./routes/post");
+const commentRoutes         = require("./routes/comment");
 
 app.use(cors(corsOptions));
 app.use(helmet()); //Sécuriser les headers
@@ -41,5 +42,6 @@ db.sequelize.sync();
 app.use("/reseau_social/member", userRoutes);
 app.use("/reseau_social", userConnectRoutes);
 app.use("/reseau_social/post", postRoutes);
+app.use("/reseau_social/post", commentRoutes);
 
 module.exports = app;

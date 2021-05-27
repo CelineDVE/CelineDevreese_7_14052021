@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const db = require("../models");
-const User = db.users;
+const bcrypt        = require("bcrypt");
+const jwt           = require("jsonwebtoken");
+const db            = require("../models");
+const User          = db.users;
 
 exports.signup = (req, res, next) => {
   bcrypt
@@ -11,7 +11,11 @@ exports.signup = (req, res, next) => {
         email: req.body.email,
         username: req.body.username,
         password: hash,
-        imageUrl: req.body.imageUrl
+        imageUrl: req.body.imageUrl,
+        message: null,
+        followers: [],
+        following: [],
+        likes: []
       });
       user
         .save()

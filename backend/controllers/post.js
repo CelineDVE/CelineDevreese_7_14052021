@@ -1,11 +1,20 @@
 const db            = require("../models");
 const fs            = require("file-system");
 const user          = require("../models/user");
+const post = require("../models/post");
 const User          = db.users;
 const Post          = db.posts;
 
 exports.createPost = (req, res, next) => {
-  
+    const postObject = { ...req.body };
+    if(postObject.image_url) {
+        postObject.image_url = `${req.protocol}://${req.get("host")}/images/${ req.file.filename }`
+    }
+    Post.create(
+      { ...postObject }
+    )
+      .then(() => res.status(201).json({ message: "Post créé !" }))
+      .catch((error) => res.status(400).json({ error }));
 };
 
 exports.updatePost = (req, res, next) => {
