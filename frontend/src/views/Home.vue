@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Groupomania logo" src="../assets/images/logo.svg">
     <Groupomania msg="Bienvenue sur notre nouveau réseau social !"/>
   </div>
 </template>
@@ -16,3 +15,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.home {
+  margin-top: 12rem;
+}
+
+</style>
