@@ -5,16 +5,13 @@ const path                  = require("path");
 const helmet                = require("helmet");
 const xss                   = require("xss-clean");
 const db                    = require("./models/index");
-const cors                  = require("cors");
 const app                   = express();
-const corsOptions           = {origin: "http://localhost:3306"};
 
 const userRoutes            = require("./routes/user");
 const userConnectRoutes     = require("./routes/userConnect");
 const postRoutes            = require("./routes/post");
 const commentRoutes         = require("./routes/comment");
 
-app.use(cors(corsOptions));
 app.use(helmet()); //Sécuriser les headers
 
 app.use((req, res, next) => {

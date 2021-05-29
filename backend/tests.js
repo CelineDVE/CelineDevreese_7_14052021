@@ -97,3 +97,55 @@ exports.createPost = (req, res, next) => {
     .then(() => res.status(201).json({ message: "Post créé !" }))
     .catch((error) => res.status(400).json({ error }));
 };
+
+
+// FRONTEND
+
+  import axios from "axios";
+
+  export default {
+    name: "Signup",
+    data: () => {
+      return {
+        username: "",
+        email: "",
+        password: "",
+        image_url: "",
+        message: "",
+      };
+    },
+    methods: {
+      sendForm() {
+        let token = "";
+        const passwordReg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+        if (this.username && this.email && passwordReg.test(this.password)) {
+          axios
+            .post(
+              "http://localhost:3000/reseau_social/signup",
+              {
+                username: this.username,
+                email: this.email,
+                password: this.password,
+              },
+              {
+                headers: {
+                  "Content-type": "application/json",
+                  Authorization: `Bearer${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              console.log("Inscription réussi !");
+              let reponse = response.data;
+              let userObject = JSON.stringify(reponse);
+              this.$localStorage.set("users", userObject);
+              let user = JSON.parse(this.$localStorage.get("users"));
+              token = user.token;
+              window.location.href = "http://localhost:8081/#/login";
+            })
+            .catch((error) => console.log("Echec de l'inscription", error));
+        }
+      },
+    },
+  };

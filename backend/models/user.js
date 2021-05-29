@@ -32,16 +32,7 @@ module.exports = (sequelize, Datatypes) => {
       message: {
         type: Datatypes.STRING,
         required: false,
-      },
-      followers: {
-        type: Datatypes.JSON,
-      },
-      following: {
-        type: Datatypes.JSON,
-      },
-      likes: {
-        type: Datatypes.JSON,
-      },
+      }
     },
     {
       underscored: true,

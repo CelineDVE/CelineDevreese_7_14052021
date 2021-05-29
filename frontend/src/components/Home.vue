@@ -2,8 +2,12 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      Nous vous invitons à vous inscrire, si ce n'est pas encore le cas.
+      Nous vous rappelons qu'il s'agit d'un réseau social professionnel, nous vous demandons donc d'être respectueux dans vos propos. 
     </p>
+    <p>N'hésitez pas à contacter le service informatique en cas de soucis concernant l'utilisation du site.</p>
+    <p>
+      Vous devez être inscrit pour utiliser les services de ce site, cela se passe dans Inscription, ci dessus.
+    </p>    
   </div>
 </template>
 
@@ -21,7 +25,8 @@ export default {
 
   .hello p {
     font-size: 1.3rem;
-    margin: 38px 0 70px 0;
+    margin: 5rem;
+    text-align: justify;
   }
 
 </style>
