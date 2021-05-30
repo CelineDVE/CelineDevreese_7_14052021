@@ -18,10 +18,10 @@
   export default {
     computed: {
       ...mapGetters({
-        copyright: "copyright"
+        copyright : "copyright"
       }),
       ...mapState({
-        restaurantName: "ourName"
+        ourName : "Groupomania"
       })
     }
   }
@@ -53,7 +53,7 @@
   }
 
   body {
-    background: url('./assets/images/logo.svg') no-repeat bottom;
+    background: url('./assets/images/logo.svg') no-repeat center;
     background-size: 500px;
     height: 100vh;
   }
@@ -61,7 +61,6 @@
   footer {
     position: fixed;
     bottom: 0;
-    margin-left: 20px;
   }
 
 </style>

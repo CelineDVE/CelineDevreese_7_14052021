@@ -70,10 +70,3 @@ exports.findAllUsers = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.follow = (req, res, next) => {
-
-};
-
-exports.unfollow = (req, res, next) => {
-
-};

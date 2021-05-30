@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = (sequelize, Datatypes) => {
   const User = sequelize.define(
     "User",
@@ -25,6 +27,9 @@ module.exports = (sequelize, Datatypes) => {
         required: true,
         minLength: 6,
       },
+      isAdmin: {
+        type: Datatypes.BOOLEAN
+      },
       image_url: {
         type: Datatypes.STRING,
         default: "./profil_default.jpeg",
@@ -32,18 +37,15 @@ module.exports = (sequelize, Datatypes) => {
       message: {
         type: Datatypes.STRING,
         required: false,
-      }
+      },
     },
     {
       underscored: true,
     }
   );
   User.associate = (models) => {
-    User.hasMany(
-      models.Post,
-      { foreignKey: "userId" },
-      { onDelete: "cascade" }
-    );
+    User.hasMany(models.Post, { foreignKey: "userId" }, { onDelete: "cascade" });
+    User.hasMany(models.Comment, { foreignKey: "userId"}, { onDelete: "cascade" })
   };
   return User;
 };

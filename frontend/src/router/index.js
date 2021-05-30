@@ -20,6 +20,11 @@ const routes = [
     name: "Signup",
     component: () => import("../components/Signup.vue"),
   },
+  {
+    path: "/thewall",
+    name: "TheWall",
+    component: () => import("../components/TheWall.vue"),
+  },
 ];
 
 const router = new VueRouter({

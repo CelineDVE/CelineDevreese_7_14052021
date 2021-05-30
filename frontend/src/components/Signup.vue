@@ -2,7 +2,7 @@
   <div class="signup">
     <fieldset>
       <legend>Créer un compte</legend>
-      <form method="POST" @submit.prevent="sendForm()" id="formSignup" name="formSignup">
+      <form method="POST" @submit.prevent="sendForm()">
         <label for="username">
           <i class="fas fa-arrow-down"></i>
           Choisissez un pseudo
@@ -48,7 +48,7 @@
     methods: {
       sendForm() {
         const passwordReg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
+        let token = ""
         if (this.username && this.email && passwordReg.test(this.password)) {
           let data = {
             username : this.username,
@@ -60,10 +60,12 @@
             method: "POST",
             headers: { "Content-Type" : "application/json"},
             body: JSON.stringify(data),
+            authorization: `Bearser${token}`
           };
           fetch(urlSignup, myInit)
             .then((response) => response.json)
             .then((user) => {
+              token = user.token;
               localStorage.removeItem('data');
               localStorage.setItem('userId', user.userId);
               window.location.href = "http://localhost:8081/#/login"
