@@ -38,7 +38,10 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach((file) => {
-    const model = path.join(__dirname, file);
+    const model = require(path.join(__dirname, file))(
+      sequelize,
+      Sequelize.DataTypes
+    );
     db[model.name] = model;
   });
 
@@ -54,6 +57,15 @@ db.sequelize = sequelize;
 db.users = require("./user")(sequelize, Sequelize);
 db.posts = require("./post")(sequelize, Sequelize);
 db.comments = require("./comment")(sequelize, Sequelize);
+
+db.posts.belongsTo(db.users);
+
+db.comments.belongsTo(db.users);
+db.comments.belongsTo(db.posts);
+db.comments.hasOne(db.comments);
+
+db.users.hasMany(db.posts);
+db.users.hasMany(db.comments);
 
 sequelize
   .authenticate()

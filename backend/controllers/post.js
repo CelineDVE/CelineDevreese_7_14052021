@@ -1,21 +1,56 @@
 const db            = require("../models");
 const fs            = require("file-system");
-const user          = require("../models/user");
-const post = require("../models/post");
 const User          = db.users;
 const Post          = db.posts;
+const Comment       = db.comments;
+
+//CREATE - START
 
 exports.createPost = (req, res, next) => {
-    const postObject = { ...req.body };
-    if(postObject.image_url) {
-        postObject.image_url = `${req.protocol}://${req.get("host")}/images/${ req.file.filename }`
-    }
-    Post.create(
-      { ...postObject }
-    )
-      .then(() => res.status(201).json({ message: "Post créé !" }))
-      .catch((error) => res.status(400).json({ error }));
+  const postObject = { ...req.body };
+  delete postObject.id;
+  if (postObject.image_url) {
+    postObject.image_url = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+  }
+  Post.create({ ...postObject })
+    .then(() => res.status(201).json({ message: "Post créé !" }))
+    .catch((error) => res.status(400).json({ error }));
 };
+
+//CREATE - END
+
+//READ - START
+
+exports.findOnePost = (req, res, next) => {
+  Post.findOne({ where: { id: req.params.id } })
+    .then((post) => res.status(200).json(post))
+    .catch((error) => res.status(404).json({ error }));
+};
+
+exports.findAllPostsUser = (req, res, next) => {
+  Post.findAll(
+    {
+      where: { userId: req.params.userId },
+      include: [Comment],
+    },
+    {
+      order: [["created_at", "DESC"]],
+    }
+  )
+    .then((posts) => res.status(200).json(posts))
+    .catch((error) => res.status(400).json({ error }));
+};
+
+exports.findAllPosts = (req, res, next) => {
+  Post.findAll()
+    .then((posts) => res.status(200).json(posts))
+    .catch((error) => res.status(400).json({ error }));
+};
+
+
+//READ - END
+
+//UPDATE - START
 
 exports.updatePost = (req, res, next) => {
     Post
@@ -42,6 +77,10 @@ exports.updatePost = (req, res, next) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
+//UPDATE - END
+
+//DELETE - START
+
 exports.deletePost = (req, res, next) => {
     Post
         .findOne({ where: { id: req.params.id } })
@@ -67,16 +106,7 @@ exports.deletePost = (req, res, next) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-exports.findOnePost = (req, res, next) => {
-    Post
-        .findOne({ where: { id: req.params. id }})
-        .then(post => res.status(200).json(post))
-        .catch(error => res.status(404).json({ error }));
-};
+//DELETE - END
 
-exports.findAllPosts = (req, res, next) => {
-    Post
-        .findAll()
-        .then(posts => res.status(200).json(posts))
-        .catch(error => res.status(400).json({ error }));
-};
+
+

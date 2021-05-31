@@ -1,10 +1,56 @@
 const db        = require("../models");
 const fs        = require("file-system");
 const User      = db.users;
+const Post      = db.posts;
+const Comment   = db.comments;
+const { Op }    = require("sequelize");
+
+//CREATE -START
+
+// CF userConnect.js => Signup
+
+//CREATE - END
+
+//READ - START
+
+exports.findOneUser = (req, res, next) => {
+  const userMySql = {};
+  User.findOne({ where: { id: req.params.id } })
+    .then((user) => {
+      userMySql.id = user.id;
+      userMySql.username = user.username;
+      userMySql.create_at = user.create_at;
+      userMySql.isAdmin = user.isAdmin;
+    })
+    .then(() => {
+      Post.count({ where: { userId: req.params.id } })
+        .then((total) => {
+          userMySql.totalPosts = total;
+        })
+        .then(() => {
+          Comment.count({ where: { userId: req.params.id } }).then((total) => {
+            userMySql.totalComments = total;
+            res.status(200).json(userMySql);
+          });
+        })
+        .catch((error) => res.status(400).json({ error }));
+    })
+    .catch((error) => res.status(404).json({ error }));
+};
+
+exports.findAllUsers = (req, res, next) => {
+  User
+    .findAll({ where: {id: { [Op.gt]: 0 }}})
+    .then((users) => res.status(200).json(users))
+    .catch((error) => res.status(400).json({ error }));
+};
+
+//READ - END
+
+//UPDATE - START
 
 exports.updateUser = (req, res, next) => {
-  User
-    .update(req.body, { where: { id: req.params.id } })
+  User.update(req.body, { where: { id: req.params.id } })
     .then((user) => {
       if (user.image_url !== null) {
         const userObject = req.file
@@ -22,51 +68,32 @@ exports.updateUser = (req, res, next) => {
         )
           .then(() => res.status(200).json({ message: "User modifié !" }))
           .catch((error) => res.status(400).json({ error }));
-        }        
+      }
     })
     .catch((error) => res.status(500).json({ error }));
 };
 
-exports.deleteUser = (req, res, next) => {
-    User
-        .findOne({ where: { id: req.params.id } })
-        .then((user) => {
-          if(user.image_url !== null) {
-            const filename = user.image_url.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
-                User.destroy({ where: { id: req.params.id } })
-                  .then(() =>
-                    res.status(200).json({ message: "Membre supprimé avec la photo de profil !" })
-                  )
-                  .catch((error) => res.status(400).json({ error }));
-            });
-          } else {
-            User
-              .destroy({ where: { id: req.params.id } })
-              .then(() =>
-                res
-                  .status(200)
-                  .json({ message: "Member supprimé !" })
-              )
-              .catch((error) =>
-                res.status(400).json({ error })
-              );
-          }
-        })
-        .catch((error) => res.status(500).json({ error }));
+//UPDATE - END
+
+//DELETE - START
+
+exports.deleteOneUser = (req, res, next) => {
+  if (req.query.isAdmin) {
+    Post    .destroy({ where: { UserId: req.query.userid } });    
+    Comment .destroy({ where: { UserId: req.query.userid } });
+    User    .destroy({ where: { id: req.query.userid } })
+      .then((res) => {res.status(200).json({ message: "Les éléments sont supprimés." })})
+      .catch((error) => res.status(400).json({ error }));
+  } else {
+    res.status(401).json({ message: "Non autorisé" });
+  }
 };
 
-exports.findOneUser = (req, res, next) => {
-  User
-    .findOne({ where: {id: req.params.id} })
-    .then((user) => res.status(200).json(user))
-    .catch((error) => res.status(404).json({ error }));
+exports.deleteMyProfile = (req, res, next) => {
+    Post      .destroy({ where: { userId: req.params.id } });      
+    Comment   .destroy({ where: { userId: req.params.id } });
+    User      .destroy({ where: { id: req.params.id } })   
+      .then(() => res.status(200).json({ message: "Compte supprimé" }))
+      .catch((error) => console.log(error));
 };
-
-exports.findAllUsers = (req, res, next) => {
-  User
-    .findAll()
-    .then((users) => res.status(200).json(users))
-    .catch((error) => res.status(400).json({ error }));
-};
-
+//DELETE - END

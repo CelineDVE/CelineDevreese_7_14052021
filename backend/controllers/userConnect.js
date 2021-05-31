@@ -10,12 +10,7 @@ exports.signup = (req, res, next) => {
       const user = new User({
         email: req.body.email,
         username: req.body.username,
-        password: hash,
-        imageUrl: req.body.imageUrl,
-        message: null,
-        followers: [],
-        following: [],
-        likes: []
+        password: hash
       });
       user
         .save()
@@ -39,10 +34,12 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: "Mot de passe incorrect !" });
           }
           res.status(200).json({
-            userId: user.id,
-            token: jwt.sign({ userId: user.id }, process.env.KEY_JWT, {
-              expiresIn: "24h",
-            }),
+            message:    "Connexion réussie",
+            userId:     user.id,
+            role:       user.isAdmin,
+            username:   user.username,
+            token:      jwt.sign({ userId: user.id }, process.env.KEY_JWT, {
+            expiresIn:  "24h" }),
           });
         })
         .catch((error) => res.status(500).json({ error }));

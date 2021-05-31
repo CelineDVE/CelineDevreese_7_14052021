@@ -1,51 +1,32 @@
-"use strict";
+const { Model } = require("sequelize");
 
-module.exports = (sequelize, Datatypes) => {
-  const User = sequelize.define(
-    "User",
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {}
+  User.init(
     {
-      email: {
-        type: Datatypes.STRING(40),
-        allowNull: false,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true,
-      },
       username: {
-        type: Datatypes.STRING(40),
+        type: DataTypes.STRING,
         allowNull: false,
-        required: true,
+      },
+      email: {
+        type: DataTypes.STRING,
         unique: true,
-        minLength: 3,
-        maxLength: 40,
-        trim: true,
+        allowNull: false,
       },
       password: {
-        type: Datatypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
-        required: true,
-        minLength: 6,
       },
       isAdmin: {
-        type: Datatypes.BOOLEAN
-      },
-      image_url: {
-        type: Datatypes.STRING,
-        default: "./profil_default.jpeg",
-      },
-      message: {
-        type: Datatypes.STRING,
-        required: false,
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
     },
     {
-      underscored: true,
+      sequelize,
+      modelName: "User",
     }
   );
-  User.associate = (models) => {
-    User.hasMany(models.Post, { foreignKey: "userId" }, { onDelete: "cascade" });
-    User.hasMany(models.Comment, { foreignKey: "userId"}, { onDelete: "cascade" })
-  };
   return User;
 };

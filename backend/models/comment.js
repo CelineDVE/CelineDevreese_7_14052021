@@ -1,49 +1,18 @@
-"use strict";
+const { Model } = require("sequelize");
 
-module.exports = (sequelize, Datatypes) => {
-  const Comment = sequelize.define(
-    "Comment",
+module.exports = (sequelize, DataTypes) => {
+  class Comment extends Model {}
+
+  Comment.init(
     {
-      message: {
-        type: Datatypes.STRING,
-        require: true,
-      },
-      image_url: {
-        type: Datatypes.STRING,
-        require: false,
-      },
-      userId: {
-        type: Datatypes.INTEGER,
-        require: true,
-        reference: {
-            model: "User",
-            key: "id"
-        }
-      },
-      postId: {
-        type: Datatypes.INTEGER,
-        require: true,
-        reference: {
-            model: "Post",
-            key: "id"
-        }
+      comment: {
+        type: DataTypes.TEXT,
       },
     },
     {
-      underscored: true,
+      sequelize,
+      modelName: "Comment",
     }
   );
-  Comment.associate = (models) => {
-    Comment.belongTo(models.User, {
-      foreignKey: {
-        allowNull: false,
-      },
-    });
-    Comment.belongTo(models.Post, {
-      foreignKey: {
-        allowNull: false,
-      },
-    });
-  };
   return Comment;
 };

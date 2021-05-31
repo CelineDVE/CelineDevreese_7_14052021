@@ -39,6 +39,6 @@ db.sequelize.sync();
 app.use("/reseau_social/member", userRoutes);
 app.use("/reseau_social", userConnectRoutes);
 app.use("/reseau_social/post", postRoutes);
-app.use("/reseau_social/post", commentRoutes);
+app.use("/reseau_social/comments", commentRoutes);
 
 module.exports = app;
