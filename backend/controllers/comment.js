@@ -1,15 +1,15 @@
 const db        = require("../models");
-const fs        = require("file-system");
-const user      = require("../models/user");
 const User      = db.users;
 const Post      = db.posts;
 const Comment   = db.comments;
 
+
+//CREATE - BEGIN
 exports.createComment = (req, res, next) => {
   const comment = new Comment({
-    userId: req.body.userId,
-    postId: req.body.postId,
-    message: req.body.message,
+    UserId: req.body.UserId,
+    PostId: req.body.PostId,
+    message: req.body.message
   });
   comment
     .save()
@@ -18,35 +18,49 @@ exports.createComment = (req, res, next) => {
   //}
 };;
 
-exports.updateComment = (req, res, next) => {
+//CREATE - END
 
-};
+// READ - BEGIN
 
-exports.deleteComment = (req, res, next) => {
-
-};
-
-exports.findOneComment = (req, res, next) => {
+exports.findCommentsUser = (req, res, next) => {
     Comment.findAll({
       where: {
-        CommentId: req.params.Commentid,
+        PostId: req.params.Postid,
       },
       include: {
-        model: user,
+        model: User,
         required: true,
         attributes: ["username"],
       },
     })
-      .then((comment) => {
-        res.status(200).json(comment);
+      .then((comments) => {
+        res.status(200).json(comments);
       })
       .catch((error) => res.status(404).json({ error }));
 };
 
-exports.findAllComments = (req, res, next) => {
-    Comment.findAll()
-      .then((comments) => {
-        res.status(200).json(comments);
-      })
-      .catch((error) => res.status(400).json({ error }));
+//READ - END
+
+//UPDATE - BEGIN
+
+exports.updateComment = (req, res, next) => {
+
 };
+
+//UPDATE - END
+
+//DELETE - BEGIN
+
+exports.deleteComment = (req, res, next) => {
+    Comment
+        .findOne({ where: { id: req.params.id } })
+        .then(() => {
+                Comment
+                    .destroy({ where: { id: req.params.id } })
+                    .then(() => res.status(200).json({ message: "Commentaire supprimé !" }))
+                    .catch((error) => res.status(400).json({ error }));
+        })
+        .catch((error) => res.status(500).json({ error }));
+};
+
+//DELETE - END

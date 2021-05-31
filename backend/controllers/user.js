@@ -5,13 +5,13 @@ const Post      = db.posts;
 const Comment   = db.comments;
 const { Op }    = require("sequelize");
 
-//CREATE -START
+//CREATE -BEGIN
 
 // CF userConnect.js => Signup
 
 //CREATE - END
 
-//READ - START
+//READ - BEGIN
 
 exports.findOneUser = (req, res, next) => {
   const userMySql = {};
@@ -47,7 +47,7 @@ exports.findAllUsers = (req, res, next) => {
 
 //READ - END
 
-//UPDATE - START
+//UPDATE - BEGIN
 
 exports.updateUser = (req, res, next) => {
   User.update(req.body, { where: { id: req.params.id } })
@@ -75,7 +75,7 @@ exports.updateUser = (req, res, next) => {
 
 //UPDATE - END
 
-//DELETE - START
+//DELETE - BEGIN
 
 exports.deleteOneUser = (req, res, next) => {
   if (req.query.isAdmin) {

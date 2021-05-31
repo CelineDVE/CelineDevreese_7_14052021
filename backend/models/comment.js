@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Comment.init(
     {
-      comment: {
+      message: {
         type: DataTypes.TEXT,
       },
     },
