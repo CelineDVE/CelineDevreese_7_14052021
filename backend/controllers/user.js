@@ -14,26 +14,16 @@ const { Op }    = require("sequelize");
 //READ - BEGIN
 
 exports.findOneUser = (req, res, next) => {
-  const userMySql = {};
   User.findOne({ where: { id: req.params.id } })
     .then((user) => {
-      userMySql.id = user.id;
-      userMySql.username = user.username;
-      userMySql.createdAt = user.createdAt;
-      userMySql.isAdmin = user.isAdmin;
-    })
-    .then(() => {
-      Post.count({ where: { userId: req.params.id } })
-        .then((total) => {
-          userMySql.totalPosts = total;
-        })
-        .then(() => {
-          Comment.count({ where: { userId: req.params.id } }).then((total) => {
-            userMySql.totalComments = total;
-            res.status(200).json(userMySql);
-          });
-        })
-        .catch((error) => res.status(400).json({ error }));
+      const infos =  Object.assign({
+          Userid:     user.id,
+          username:   user.username,
+          email:      user.email,
+          imageUrl:   user.imageUrl,
+          createdAt:  user.createdAt
+        });
+      res.status(200).json({ infos })
     })   
     .catch((error) => res.status(404).json({ error }));
 

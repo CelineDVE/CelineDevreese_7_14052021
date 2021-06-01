@@ -26,18 +26,21 @@ if (!user) {
 
 const store = createStore({
   state: {
+    ourName: "Groupomania",
     status: "",
-    user: {
-      message: "",
-      Userid: -1,
-      role: "",
-      username: "",
-      token: "",
-    },
+    user: user,
     userInfos: {
-        username: "",
-        email: "",
-        createdAt: ""
+      username: "",
+      email: "",
+      imageUrl: "",
+      createdAt: "",
+    },
+  },
+  getters: {
+    copyright: (state) => {
+      const currentYear = new Date().getFullYear();
+
+      return `© Copyright ${state.ourName} ${currentYear}`;
     },
   },
   mutations: {
@@ -45,12 +48,19 @@ const store = createStore({
       state.status = status;
     },
     logUser: function(state, user) {
-        instance.defaults.headers.common['Authorization'] = user.token;
-        localStorage.setItem('user', JSON.stringify(user));
-        state.user = user;
+      instance.defaults.headers.common["Authorization"] = user.token;
+      localStorage.setItem("user", JSON.stringify(user));
+      state.user = user;
     },
-    userInfos: function (state, userInfos) {
-        state.userInfos = userInfos;
+    userInfos: function(state, userInfos) {
+      state.userInfos = userInfos;
+    },
+    logout: function(state) {
+      state.user = {
+        Userid: -1,
+        token: "",
+      };
+      localStorage.removeItem("user");
     },
   },
   actions: {
@@ -86,7 +96,14 @@ const store = createStore({
           });
       });
     },
-
+    getUserInfos: ({ commit }) => {
+      instance
+        .post(`/member/${user.UserId}`)
+        .then(function(response) {
+          commit("userInfos", response.data.infos);
+        })
+        .catch(function() {});
+    },
   },
 });
 

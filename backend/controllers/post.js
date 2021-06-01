@@ -73,10 +73,10 @@ exports.findAllPosts = (req, res, next) => {
           {},
           {
             id: post.id,
-            created_at: post.created_at,
+            createdAt: post.createdAt,
             message: post.message,
             image_url: post.image_url,
-            serId: post.userId,
+            UserId: post.userId,
             username: post.User.username,
             isActive: post.User.isActive,
           }

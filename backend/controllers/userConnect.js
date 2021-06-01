@@ -34,10 +34,10 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: "Mot de passe incorrect !" });
           }
           res.status(200).json({
-            message:    "Connexion réussie",
             UserId:     user.id,
             role:       user.isAdmin,
             username:   user.username,
+            email:      user.email,
             token:      jwt.sign({ userId: user.id }, process.env.KEY_JWT, {
             expiresIn:  "24h" }),
           });
