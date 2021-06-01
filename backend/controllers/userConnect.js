@@ -35,7 +35,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             message:    "Connexion réussie",
-            userId:     user.id,
+            UserId:     user.id,
             role:       user.isAdmin,
             username:   user.username,
             token:      jwt.sign({ userId: user.id }, process.env.KEY_JWT, {

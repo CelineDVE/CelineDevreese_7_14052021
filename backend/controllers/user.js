@@ -19,7 +19,7 @@ exports.findOneUser = (req, res, next) => {
     .then((user) => {
       userMySql.id = user.id;
       userMySql.username = user.username;
-      userMySql.create_at = user.create_at;
+      userMySql.createdAt = user.createdAt;
       userMySql.isAdmin = user.isAdmin;
     })
     .then(() => {
@@ -34,8 +34,9 @@ exports.findOneUser = (req, res, next) => {
           });
         })
         .catch((error) => res.status(400).json({ error }));
-    })
+    })   
     .catch((error) => res.status(404).json({ error }));
+
 };
 
 exports.findAllUsers = (req, res, next) => {
