@@ -13,4 +13,3 @@ router.get              ("/:Userid",    auth,         postCtrl.findAllPostsUser)
 router.get              ("/",           auth,         postCtrl.findAllPosts);
 
 module.exports = router;
-

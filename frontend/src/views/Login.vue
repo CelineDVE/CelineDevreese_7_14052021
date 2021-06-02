@@ -1,11 +1,11 @@
 <template>
 
   <fieldset>
-        <legend class="card__title" v-if="mode == 'login'">Connexion</legend>
-        <legend class="card__title" v-else>Créer un compte</legend>      
-        <div class="card">
-            <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="card__action" @click="switchToCreateAccount()">Créer un compte</span></p>
-            <p class="card__subtitle" v-else>Tu as déjà un compte ? <span class="card__action" @click="switchToLogin()">Se connecter</span></p>
+    <legend class="card__title" v-if="mode == 'login'">Connexion</legend>
+    <legend class="card__title" v-else>Créer un compte</legend>      
+    <div class="card">
+        <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="card__action" @click="switchToCreateAccount()">Créer un compte</span></p>
+        <p class="card__subtitle" v-else>Tu as déjà un compte ? <span class="card__action" @click="switchToLogin()">Se connecter</span></p>
     <div class="form-row">
       <input v-model="email" class="form-row__input" type="email" pattern=".+@groupomania.com" placeholder="Adresse mail" required/>
     </div>

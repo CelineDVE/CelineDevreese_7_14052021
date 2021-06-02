@@ -98,10 +98,22 @@ const store = createStore({
     },
     getUserInfos: ({ commit }) => {
       instance
-        .post(`/member/${user.UserId}`)
+        .get(`/member/${user.UserId}`)
         .then(function(response) {
-          commit("userInfos", response.data.infos);
+            commit("userInfos", response.data.infos);
+            (() => {
+                if (window.localStorage) {
+                    if (!localStorage.getItem("reload")) {
+                        localStorage["reload"] = true;
+                        window.location.reload();
+                    } else {
+                        localStorage.removeItem("reload");
+                    }
+                }
+            })
+            ()
         })
+
         .catch(function() {});
     },
   },

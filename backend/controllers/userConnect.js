@@ -38,6 +38,7 @@ exports.login = (req, res, next) => {
             role:       user.isAdmin,
             username:   user.username,
             email:      user.email,
+            imageUrl:   user.imageUrl,
             token:      jwt.sign({ userId: user.id }, process.env.KEY_JWT, {
             expiresIn:  "24h" }),
           });

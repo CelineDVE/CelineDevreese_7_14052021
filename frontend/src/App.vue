@@ -3,7 +3,6 @@
     <h1></h1>
     <router-view/> 
     <footer>
-      <img id="logo" src="./assets/logo.svg" alt="Groupomania logo">
       <p> {{ copyright }} </p>
     </footer>  
   </div>
@@ -40,18 +39,13 @@ export default {
     max-width: 100%;
   }
   body {
+    background: url('./assets/logo.svg') no-repeat; 
+    background-size: 300px;   
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     padding:32px;
-  }
-  #logo {
-    width: 200px;
-  }
-  img {
-    max-width: 100%;
-    border-radius: 8px;
   }
   fieldset {
     max-width: 100%;
@@ -101,10 +95,7 @@ export default {
     background:#cecece;
   }
   footer {
-    width: 100%;
     margin: 3rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-ar;
+    text-align: right;
   }
 </style>

@@ -21,6 +21,7 @@ exports.findOneUser = (req, res, next) => {
           username:   user.username,
           email:      user.email,
           imageUrl:   user.imageUrl,
+          message:    user.message,
           createdAt:  user.createdAt
         });
       res.status(200).json({ infos })
